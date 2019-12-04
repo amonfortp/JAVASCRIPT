@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task 27</title>
+</head>
+
+<body>
+    <label for="">Numero de notas que quieres introducir - </label>
+    <input type="number" id="num" min="0">
+    <br>
+    <button type="button" onclick="notas();">Notas</button>
+    <p id="return"></p>
+    <script>
+        /**
+         * TASK 27
+         * Introducir x notas y mostar un mensaje segun la media, ademas
+         * de mostrar la nota mas baja y alta ademas del examen
+         */
+
+        //funcion para pedir las notas y reunir el resto de funciones
+        function notas() {
+            var num = Number(document.getElementById("num").value);
+            var media = 0;
+            var notaP = 0;
+            var notaA = 0;
+            var array = [];
+
+            if (num > 0 && Number.isInteger(num)) {
+                for (var i = 0; i < num; i++) {
+                    let nota = Number(prompt("Introduce la nota del examen " + (i + 1)));
+                    if (!isNaN(nota)) {
+                        if (nota >= 0 && nota <= 100) {
+                            array.push(nota);
+                        } else {
+                            i--;
+                            alert("No esta en el rango");
+                        }
+                    } else {
+                        i--;
+                        alert("Solo numeros");
+                    }
+                }
+
+                media = calcularMedia(array);
+                notaP = notaBaja(array);
+                notaA = notaAlta(array);
+                let felicitacion = "";
+
+
+                if (media >= 89 && media <= 100) {
+                    felicitacion = "A+";
+                } else {
+                    felicitacion = "Trabaja mas duro amigo";
+                }
+                document.getElementById("return").innerHTML =
+                    "Nota media = " +
+                    media +
+                    " " +
+                    felicitacion +
+                    "<br>Nota mas baja - " +
+                    notaP[1] +
+                    " del examen " +
+                    notaP[0] +
+                    "<br>Nota mas alta - " +
+                    notaA[1] +
+                    " del examen " +
+                    notaA[0];
+            } else {
+                alert("No valido");
+            }
+
+
+        }
+
+
+        function calcularMedia(array) {
+            var media = 0;
+
+            for (var i = 0; i < array.length; i++) {
+                media += array[i];
+            }
+
+            return media / array.length - 1;
+        }
+
+        function notaAlta(array) {
+            var notaE = [0, 0];
+
+            for (var i = 0; i < array.length; i++) {
+                if (notaE[1] < array[i]) {
+                    notaE[0] = i + 1;
+                    notaE[1] = array[i];
+                }
+            }
+
+            return notaE;
+        }
+
+        function notaBaja(array) {
+            var notaE = [0, notaAlta(array)[1]];
+
+            for (var i = 0; i < array.length; i++) {
+                if (notaE[1] > array[i]) {
+                    notaE[0] = i + 1;
+                    notaE[1] = array[i];
+                }
+            }
+
+            return notaE;
+        }
+    </script>
+</body>
+
+</html>

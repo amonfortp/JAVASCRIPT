@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 1</title>
+</head>
+
+<body>
+    <label for="">Titulo - </label>
+    <input type="text" id="t1">
+    <label for="">Grupo - </label>
+    <input type="text" id="g1">
+    <label for="">Fecha - </label>
+    <input type="date" id="d1">
+    <br>
+    <label for="">Titulo - </label>
+    <input type="text" id="t2">
+    <label for="">Grupo - </label>
+    <input type="text" id="g2">
+    <label for="">Fecha - </label>
+    <input type="date" id="d2">
+    <br>
+    <label for="">Titulo - </label>
+    <input type="text" id="t3">
+    <label for="">Grupo - </label>
+    <input type="text" id="g3">
+    <label for="">Fecha - </label>
+    <input type="date" id="d3">
+    <br>
+    <br>
+    <button type="button" onclick="introducir();">Introducir</button>
+    <p id="return"></p>
+    <script>
+        /** 
+         * Constructor del objeto cd musica
+         * @param String - Titulo del cd
+         * @param String - Grupo del cd
+         * @param Date - Fecha de salida del disco
+         */
+        function Cdmusica(t, g, d) {
+            this.Titulo = t;
+            this.Grupo = g;
+            this.Date = new Date(d);
+
+            this.mostrar = function () {
+                document.getElementById("return").innerHTML += "Titulo - " + this.Titulo + " / Grupo - " + this.Grupo + " /  Fecha - " + this.Date.getDate() + "/" + (this.Date.getMonth() + 1) + "/" + this.Date.getFullYear() + "<br>";
+            }
+        }
+
+        //Creo las variables que van a almacenar los datos introducidos en los inputs, t - titulo, g - grupo, d - date.
+        var t1, g1, d1;
+        var t2, g2, d2;
+        var t3, g3, d3;
+
+        /** 
+         * Funcion para comprobar que ningun campo esta vacio o mal 
+         * introducido
+         * @return boolean
+         */
+        function comprobarCampos() {
+
+            /**
+             * Guardamos en variables el contenido de todos los inputs   
+             * para comprobar que son validos
+             */
+            t1 = document.getElementById("t1").value;
+            t2 = document.getElementById("t2").value;
+            t3 = document.getElementById("t3").value;
+            g1 = document.getElementById("g1").value;
+            g2 = document.getElementById("g2").value;
+            g3 = document.getElementById("g3").value;
+            d1 = document.getElementById("d1").value;
+            d2 = document.getElementById("d2").value;
+            d3 = document.getElementById("d3").value;
+            var valido = false;
+            var hoy = new Date();
+
+            if (t1.replace(/ /gi, "") == "") {
+                alert("Primer titulo esta vacio");
+            } else if (t2.replace(/ /gi, "") == "") {
+                alert("Segundo titulo esta vacio");
+            } else if (t3.replace(/ /gi, "") == "") {
+                alert("Tercer titulo esta vacio");
+            } else if (g1.replace(/ /gi, "") == "") {
+                alert("Primer grupo esta vacio");
+            } else if (g2.replace(/ /gi, "") == "") {
+                alert("Segundo grupo esta vacio");
+            } else if (g3.replace(/ /gi, "") == "") {
+                alert("Tercer grupo esta vacio");
+            } else if (d1 == "" || new Date(d1) > hoy) {
+                alert("Primera fecha no seleccionada o aun no a salido el disco");
+            } else if (d2 == "" || new Date(d2) > hoy) {
+                alert("Segunda fecha no seleccionada o aun no a salido el disco");
+            } else if (d3 == "" || new Date(d3) > hoy) {
+                alert("Tercera fecha no seleccionada o aun no a salido el disco");
+            } else {
+                valido = true;
+            }
+
+            return valido;
+        }
+
+        function introducir() {
+            var disco1, disco2, disco3;
+            if (comprobarCampos()) {
+                disco1 = new Cdmusica(t1, g1, d1);
+                disco2 = new Cdmusica(t2, g2, d2);
+                disco3 = new Cdmusica(t3, g3, d3);
+
+                disco1.mostrar();
+                disco2.mostrar();
+                disco3.mostrar();
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

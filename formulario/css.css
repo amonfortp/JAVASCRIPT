@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+  color: white;
+  margin: auto;
+  width: 80%;
+}
+
+header {
+  text-align: center;
+}
+
+form {
+  background-color: darkgrey;
+  color: black;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+fieldset {
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.oculto {
+  display: none;
+  color: red;
+}
+
+label {
+  margin-top: 4px;
+}
+
+.nombre {
+  width: 33%;
+  float: left;
+}
+
+.direccion {
+  width: 25%;
+  float: left;
+}
+
+.telefono {
+  width: 50%;
+  float: left;
+}

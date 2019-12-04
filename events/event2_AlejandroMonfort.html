@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 2</title>
+</head>
+
+<body>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <br>
+    <p id="result">Disabled</p>
+    <script>
+        document.getElementById("start").onclick = startButton;
+        document.getElementById("stop").onclick = stopButton;
+        var active = false;
+        var interval;
+
+        function startButton() {
+            if (active == false) {
+                interval = setInterval(function () { alert("Hello"); }, 5000);
+                document.getElementById("result").innerHTML = "Active";
+                active = true;
+            }
+        }
+
+        function stopButton() {
+            if (active == true) {
+                clearInterval(interval);
+                document.getElementById("result").innerHTML = "Disabled";
+                active = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

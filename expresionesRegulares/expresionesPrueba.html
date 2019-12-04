@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Expresiones</title>
+</head>
+
+<body>
+    <script>
+        const expRegDni = /^\d{8}$/
+        const expRegNif = /^\d{8}[a-zA-Z]$/
+        const expRegEmail = /^[a-zA-Z]+([\.-]?\w+)*@[a-zA-Z]+([\.-]?\w+)*\.[a-zA-Z]{2,}$/;
+        const expRegPhone = /^(\+34|0034|34)?[6|7|9]\d{8}$/;
+
+        function comprobarDNI(input) {
+            if (!expRegDni.test(input.value)) {
+                input.style.border = "2px solid red";
+            } else {
+                input.style.border = "2px solid green";
+            }
+
+            console.log(input.value);
+        }
+
+        function comprobarNIF(input) {
+            if (!expRegNif.test(input.value)) {
+                input.style.border = "2px solid red";
+            } else {
+                input.style.border = "2px solid green";
+            }
+
+            console.log(input.value);
+        }
+
+        function comprobarEMAIL(input) {
+            if (!expRegEmail.test(input.value)) {
+                input.style.border = "2px solid red";
+            } else {
+                input.style.border = "2px solid green";
+            }
+
+            console.log(input.value);
+        }
+
+        function comprobarPHONE(input) {
+            if (!expRegPhone.test(input.value)) {
+                input.style.border = "2px solid red";
+            } else {
+                input.style.border = "2px solid green";
+            }
+
+            console.log(input.value);
+        }
+    </script>
+
+    <Label>DNI</Label>
+    <input type="text" onkeyup="comprobarDNI(this)">
+    <Label>NIF</Label>
+    <input type="text" onkeyup="comprobarNIF(this)">
+    <Label>EMAIL</Label>
+    <input type=" text" onkeyup="comprobarEMAIL(this)">
+    <Label>PHONE</Label>
+    <input type="text" onkeyup="comprobarPHONE(this)">
+</body>
+
+</html>

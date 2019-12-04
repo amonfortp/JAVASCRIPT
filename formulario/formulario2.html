@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+    <header>
+        <h1>FORMULARIO</h1>
+    </header>
+    <form action="">
+        <fieldset>
+            <legend>NOMBRE</legend>
+            <label for="name">Name - </label>
+            <input type="text" id="name" onkeyup="validName('name')">
+            <br>
+            <label for="surname">Surname - </label>
+            <input type="text" id="surname" onkeyup="validName('surname')">
+            <label for="surname2">Surname2 - </label>
+            <input type="text" id="surname2" onkeyup="validName('surname2')">
+        </fieldset>
+        <fieldset>
+            <legend>DIRECCION</legend>
+            <label for="address">Address - </label>
+            <input type="text" id="address" onkeyup="validAddress('address')">
+            <label for="streetnumber">Street-Number - </label>
+            <input type="text" id="streetnumber" onkeyup="validAddress('streetnumber')">
+            <label for="door">Door - </label>
+            <input type="text" id="door" onkeyup="validAddress('door')">
+            <label for="postcode">POST-CODE - </label>
+            <input type="text" id="postcode" onkeyup="validAddress('postcode')">
+        </fieldset>
+        <fieldset>
+            <legend>TELEFONOS</legend>
+            <label for="phone">PHONE - </label>
+            <input type="text" id="phone" onkeyup="validPhone('phone')">
+            <label for="mobile">MOBILE - </label>
+            <input type="text" id="mobile" onkeyup="validPhone('mobile')">
+        </fieldset>
+        <fieldset>
+            <legend>CORREO Y GENERO</legend>
+            <label for="email">EMAIL - </label>
+            <input type="text" id="email" onkeyup="validEmail('email')">
+            <br>
+            <br>
+            <label for="purpose">PURPOSE</label>
+            <br>
+            <textarea id="purpose" rows="3" cols="40" onkeyup="validEmail('purpose')"></textarea>
+            <fieldset>
+                <legend>GENDER</legend>
+                <input type="radio" id="gender1" name="gender" value="male"> Male
+                <input type="radio" id="gender2" name="gender" value="female"> Female
+            </fieldset>
+        </fieldset>
+        <button type="button" onclick="validarTodo()">Enviar</button>
+    </form>
+    <script>
+
+        const expRegPhone = /^(\+34|0034|34)[9][0-9]{8}$/;
+        const expRegMobile = /^(\+34|0034|34)[6|7][0-9]{8}$/;
+        const expRegCorreo = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+        const expRegNombre = /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s]?)+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/
+
+        var name = false,
+            surname = false,
+            surname2 = false,
+            address = false,
+            streetnumber = false,
+            door = false,
+            postcode = false,
+            phone = false,
+            mobile = false,
+            email = false,
+            purpose = false,
+            gender = false;
+
+        function validarTodo() {
+            if (document.getElementById("gender1").checked || document.getElementById("gender2").checked) {
+                gender = true;
+            } else {
+                gender = false;
+            }
+
+            if (!name || !surname || !surname2) {
+                alert("Algun campo de NOMBRE esta vacio o contiene numeros o caracteres especial ($/·/~/@)");
+            } else if (!address || !streetnumber || !door || !postcode) {
+                alert("Puede que algun campo de la direccion este vacio \n - Revisa que POST CODE no contiene letras");
+            } else if (!phone || !mobile) {
+                alert("Algun numero de telefono no esta introducido o no cumple los requisitos \n -Phone +34 9 digitos empezando por 9 y sin espacios \n -Mobile +34 9 digitos empezando por 6 y sin espacios");
+            } else if (!email || !purpose || !gender) {
+                alert("Algun campo esta vacio o no se a seleccionado genero. Tambien puede estar mal introducido el correo electronico");
+            } else {
+                alert("TODO CORRECTO");
+            }
+        }
+
+        function validName(input) {
+            var i = document.getElementById(input).value.replace(/ /gi, "");
+            var valido = false;
+            if (i != "") {
+                if (expRegNombre.test(i)) {
+                    valido = true;
+                }
+
+            }
+
+            if (input == 'name') {
+                name = valido;
+            } else if (input == 'surname') {
+                surname = valido;
+            } else if (input == 'surname2') {
+                surname2 = valido;
+            }
+
+            color(input, valido);
+        }
+
+        function validAddress(input) {
+            var valido = false;
+            var i = document.getElementById(input).value;
+            if (input == "address") {
+                if (i.replace(/ /gi, "") != "") {
+                    valido = true;
+                }
+            } else if (input == "streetnumber" && !isNaN(Number(i))) {
+                if (i.replace(/ /gi, "") != "") {
+                    valido = true;
+                }
+            } else if (input == "door") {
+                if (i.replace(/ /gi, "") != "") {
+                    valido = true;
+                }
+            } else if (input == "postcode") {
+                if (i.replace(/ /gi, "") != "" && !isNaN(Number(i))) {
+                    valido = true;
+                }
+            }
+
+            if (input == 'address') {
+                address = valido;
+            } else if (input == 'streetnumber') {
+                streetnumber = valido;
+            } else if (input == 'door') {
+                door = valido;
+            } else if (input == 'postcode') {
+                postcode = valido;
+            }
+
+            color(input, valido);
+        }
+
+        function validPhone(input) {
+            var i = document.getElementById(input).value;
+            var valido = false;
+            if (i.replace(/ /gi, "") != "") {
+                if (input == "phone") {
+                    if (expRegPhone.test(i)) {
+                        valido = true;
+                    }
+                } else if (input == "mobile") {
+                    if (expRegMobile.test(i)) {
+                        valido = true;
+                    }
+                }
+            }
+
+            if (input == 'phone') {
+                phone = valido;
+            } else if (input == 'mobile') {
+                mobile = valido;
+            }
+
+            color(input, valido);
+        }
+
+        function validEmail(input) {
+            var valido = false;
+            var i = document.getElementById(input).value;
+            if (i.replace(/ /gi, "") != "") {
+                if (input == "email") {
+                    if (expRegCorreo.test(i)) {
+                        valido = true;
+                    }
+                } else {
+                    valido = true;
+                }
+            }
+
+            if (input == 'email') {
+                email = valido;
+            } else if (input == 'purpose') {
+                purpose = valido;
+            }
+            color(input, valido);
+        }
+
+        function color(input, valido) {
+            i = document.getElementById(input);
+            if (valido) {
+                i.style.boxShadow = "3px 3px 3px green";
+            } else {
+                i.style.boxShadow = "3px 3px 3px red";
+            }
+        }
+    </script>
+</body>
+
+</html>

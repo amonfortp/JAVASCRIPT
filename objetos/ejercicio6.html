@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 6</title>
+</head>
+
+<body>
+    <form action="">
+        <label for="">Número de participantes</label>
+        <input type="text" name="" id="participantes" min="2">
+        <br>
+        <label for="">Número de grupos</label>
+        <input type="text" name="" id="grupos" min="1">
+        <br>
+        <button type="button" id="btn">Mostrar grupos</button>
+        <p id="return"></p>
+    </form>
+    <script>
+        document.getElementById("btn").onclick = iniciar;
+
+        function Grupo() {
+            this.participantes = [];
+
+            this.getParticipantes = function () {
+                return this.participantes;
+            }
+
+            this.addParticipantes = function (num) {
+                this.participantes.push(num);
+            }
+
+            this.toString = function () {
+                document.getElementById("return").innerHTML += " " + this.participantes;
+            }
+        }
+
+        function numUsado(array, num) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] == num) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function distribuir(participantes, grupos) {
+            var part = [];
+            var concurso = [];
+            var usados = [];
+
+            for (var i = 0; i < grupos; i++) {
+                concurso.push(new Grupo());
+                for (var x = 0; x < participantes; x++) {
+                    var auxP = Math.floor(Math.random() * participantes + 1);
+                    if (concurso[i].getParticipantes().length < Math.round(participantes / grupos) && usados.length < participantes) {
+                        if (!numUsado(usados, auxP)) {
+                            usados.push(auxP);
+                            concurso[i].addParticipantes(auxP);
+                        } else {
+                            x--;
+                        }
+                    } else {
+                        x = participantes;
+                    }
+                }
+            }
+
+
+
+
+            return concurso;
+        }
+
+        function comprobar(participantes, grupos) {
+            var valido = false;
+            if (isNaN(Number.parseInt(participantes))) {
+                document.getElementById("return").innerHTML = "Solo numeros enteros";
+                document.getElementById("participantes").style.backgroundColor = "red";
+            } else if (isNaN(Number.parseInt(grupos))) {
+                document.getElementById("return").innerHTML = "Solo numeros enteros";
+                document.getElementById("grupos").style.backgroundColor = "red";
+            } else {
+                valido = true;
+            }
+
+            return valido;
+        }
+
+        function iniciar() {
+            var participantes = document.getElementById("participantes").value;
+            var grupos = document.getElementById("grupos").value;
+
+            if (comprobar(participantes, grupos)) {
+                var p = Number.parseInt(participantes);
+                var g = Number.parseInt(grupos);
+                var concurso = [];
+                if ((p / g) >= 2) {
+                    concurso = distribuir(p, g);
+                    document.getElementById("return").innerHTML = "";
+
+                    for (var i = 0; i < concurso.length; i++) {
+                        document.getElementById("return").innerHTML += "Grupo " + (i + 1) + ": " + concurso[i].participantes + "<br>";
+                    }
+                } else {
+                    document.getElementById("return").innerHTML = "Se necesita dos miembros por grupo";
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

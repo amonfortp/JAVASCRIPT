@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 3</title>
+</head>
+
+<body>
+    <label for=""> Teléfono - </label>
+    <input type="text" id="phone">
+    <label for=""> Nombre - </label>
+    <input type="text" id="name">
+    <label for=""> Email - </label>
+    <input type="text" id="email">
+    <select name="opcion" id="opcion">
+        <option value="1" selected disabled>Tipo de contacto</option>
+        <option value="2">Familiar</option>
+        <option value="3">Trabajo</option>
+        <option value="4">Amistad</option>
+    </select>
+    <br>
+    <br>
+    <button type="button" onclick="introducir();">Introducir</button>
+    <p id="contacto"></p>
+    <br>
+    <br>
+    <label for=""> Telefono que deseas eliminar - </label>
+    <input type="text" id="eliminar">
+    <p id="returnRemove"></p>
+    <br>
+    <button type="button" onclick="eliminar()">Eliminar</button>
+    <br>
+    <br>
+    <select name="opcionMostrar" id="opcionMostrar">
+        <option value="1" selected disabled>Tipo de contacto</option>
+        <option value="Familiar">Familiar</option>
+        <option value="Trabajo">Trabajo</option>
+        <option value="Amistad">Amistad</option>
+    </select>
+    <button type="button" onclick="mostrar()">Mostrar</button>
+    <p id="datos"></p>
+    <script>
+        //Expresiones regulares
+        const expRegPhone = /^(\+34|0034|34)?[9][0-9]{8}$/;
+        const expRegMobile = /^(\+34|0034|34)?[6|7][0-9]{8}$/;
+        const expRegCorreo = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+        const expRegNombre = /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s]?)+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/;
+
+        //Declaro las variables para obtener los datos del contacto
+        var p, n, e, o;
+
+        //Declaro el objeto contacto y agenda
+        var agenda = new Agenda();
+        var contacto;
+
+        /**
+         * Constructor del objeto Agenda
+         * @param array - vector de contactos
+         */
+        function Agenda() {
+            this.contactos = [];
+
+            /** 
+             * Funcion para añadir contactos
+             * @param Contacto - Objeto Contanco que introduciremos en el array de contactos
+             */
+            this.addContacto = function (contacto) {
+                this.contactos.push(contacto);
+            }
+
+            this.removeContacto = function (telefono) {
+                var mensaje = "No se a encontrado el numero " + telefono;
+                for (let i = 0; i < this.contactos.length; i++) {
+                    if (this.contactos[i].telefono == telefono) {
+                        this.contactos.splice(i, 1);
+                        i = i - 1;
+                        mensaje = "Eliminado con exito el numero " + telefono;
+                    }
+                }
+
+                return mensaje;
+            }
+
+            this.buscarContactosporTipo = function (tipo) {
+                var stringDatos = "";
+                var x = 1;
+
+                for (let i = 0; i < this.contactos.length; i++) {
+                    console.log(tipo);
+                    if (this.contactos[i].tipo == tipo) {
+                        stringDatos += x + " " + this.contactos[i].toString();
+                        x++;
+                    }
+                }
+
+                return stringDatos;
+            }
+        }
+
+        /**
+         * Constructor del objeto Contacto
+         * @param String - numero de telefono
+         * @param String - nombre del contacto
+         * @param String - email del contacto
+         * @param String - tipo de contacto
+         */
+        function Contacto(phone, name, email, tip) {
+            this.telefono = phone;
+            this.nombre = name;
+            this.correo = email;
+            this.tipo = tip;
+
+            this.toString = function () {
+                return "Telefono - " + this.telefono + " / Nombre - " + this.nombre + " / Email - " + this.correo + " / Tipo de contacto - " + this.tipo + "<br>";
+            }
+        }
+
+        /**
+         * Function para comprobar que los datos introducidos son correctos
+         * @return boolean
+         */
+        function comprobarDatos() {
+            p = document.getElementById("phone").value;
+            n = document.getElementById("name").value;
+            e = document.getElementById("email").value;
+            o = document.getElementById("opcion").value;
+
+            if (p.replace(/ /gi, "") == "" || !expRegMobile.test(p.replace(/ /gi, "")) && !expRegPhone.test(p.replace(/ /gi, ""))) {
+                alert("El formato del numero de telefono no es valido o esta en blanco (ejemplo formato: +34692431578)");
+            } else if (n.replace(/ /gi, "") == "") {
+                alert("El nombre esta en blanco");
+            } else if (e.replace(/ /gi, "") == "" || !expRegCorreo.test(e.replace(/ /gi, ""))) {
+                alert("El correo tiene un formato incorrecto o esta en blanco");
+            } else if (o == "1") {
+                alert("No has seleccionado ninguna opcion");
+            } else {
+                return true;
+            }
+
+            return false;
+        }
+
+        function introducir() {
+            if (comprobarDatos()) {
+                let tipo;
+                if (o == "2") {
+                    tipo = "Familiar"
+                } else if ("3") {
+                    tipo = "Trabajo"
+                } else {
+                    tipo = "Amistad"
+                }
+                contacto = new Contacto(p, n, e, tipo);
+                agenda.addContacto(contacto);
+                document.getElementById("contacto").innerHTML = contacto.toString();
+            }
+        }
+
+        function eliminar() {
+            var telefono = document.getElementById("eliminar").value;
+
+            if (telefono.replace(/ /gi, "") == "" || !expRegMobile.test(telefono.replace(/ /gi, "")) && !expRegPhone.test(telefono.replace(/ /gi, ""))) {
+                alert("El formato del numero de telefono no es valido o esta en blanco (ejemplo formato: +34692431578)");
+            } else {
+                document.getElementById("returnRemove").innerHTML = agenda.removeContacto(telefono);
+            }
+        }
+
+        function mostrar() {
+            var opcion = document.getElementById("opcionMostrar").value;
+            if (opcion != "1") {
+                document.getElementById("datos").innerHTML = agenda.buscarContactosporTipo(opcion);
+            }
+        }
+    </script>
+</body>
+
+</html>

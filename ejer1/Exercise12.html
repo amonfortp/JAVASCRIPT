@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 12</title>
+    <script src="js/myScript.js"></script>
+</head>
+
+<body>
+
+    <p id="name"></p>
+    <p id="surname"></p>
+    <p id="age"></p>
+    <p id="older"></p>
+    <p id="studyWork"></p>
+    <p id="salary"></p>
+    <p id="salaryYear"></p>
+
+
+
+
+    <script>
+        const SALARYJUNIOR = 18000;
+
+        var name = prompt("What is your name?", "Write your name");
+        var surname = prompt("What is your surname?", "Write your first surname");
+        var age = prompt("What is your birthdate?", "Example = 09/09/9999");
+        var older = confirm("Are you older than 18?", "yes/no");
+        var studyWork = "study";
+        var salary;
+        var salaryYear;
+
+        if (older) {
+            studyWork = prompt("Are you studiying or working?", "Choose one study/work");
+            if (studyWork == "work") {
+                salary = prompt("how much you earn per month?", "example: 900");
+                salaryYear = salary * 12;
+            }
+        }
+
+        document.getElementById("name").innerHTML = name;
+        document.getElementById("surname").innerHTML = surname;
+        document.getElementById("age").innerHTML = age;
+        document.getElementById("older").innerHTML = older;
+        document.getElementById("studyWork").innerHTML = studyWork;
+        if (older == true && studyWork == "work") {
+            document.getElementById("salary").innerHTML = salary;
+            document.getElementById("salaryYear").innerHTML = salaryYear;
+            document.write("<br><br><br>");
+            if (salaryYear > SALARYJUNIOR) {
+                document.write("ERES EL PU** AMO");
+            } else if (salaryYear == SALARYJUNIOR) {
+                document.write("No para nada, ganas algo normal");
+            } else {
+                document.write("DAS PENA");
+            }
+        }
+    </script>
+    <noscript>
+        <h1>PUEDES NO TENER JAVASCRIPT ACTIVO EN SU NAVEGADOR</h1>
+    </noscript>
+</body>
+
+</html>

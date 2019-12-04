@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejemplo 1</title>
+</head>
+
+<body>
+    <p id="result"></p>
+
+    <script>
+        function mostrarMensaje(evento) {
+
+
+
+            if (evento.type == "keydown") {
+                z
+                document.getElementById("result").innerHTML = evento.keyCode + " keydown";
+                //alert(evento.keyCode + " keydown");
+            } else if (evento.type == "keyup") {
+                document.getElementById("result").innerHTML = evento.keyCode + " keyup";
+                //alert(evento.keyCode + " keyup");
+            }
+
+            if (evento.type == "keypress") {
+                document.getElementById("result").innerHTML += " " + evento.keyCode + " keypress";
+                //alert(evento.clientCode + " keypress");
+            }
+
+            if (evento.type == "click") {
+                document.getElementById("result").innerHTML = evento.clientY + " " + evento.clientX + " client<br>" + evento.screenY + " " + evento.screenX + " screen";
+                //alert(evento.clientY + " " + evento.clientX + " click");
+            }
+        }
+        document.onclick = mostrarMensaje;
+        document.onkeyup = mostrarMensaje;
+        document.onkeydown = mostrarMensaje;
+        document.onkeypress = mostrarMensaje;
+    </script>
+</body>
+
+</html>

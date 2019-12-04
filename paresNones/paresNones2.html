@@ -1,0 +1,126 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 6</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .centrar {
+            text-align: center;
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="centrar">Pares o Nones</h1>
+    <h3 class="centrar">Jugador 1 (Pares) - Jugador 2 (Nones)</h3>
+    <h4 class="centrar" id="puntuacion">Victorias: 0 - Victorias: 0</h4>
+    <table>
+        <tr>
+            <td id="11"></td>
+            <td id="12"></td>
+            <td id="22"></td>
+            <td id="21"></td>
+        </tr>
+    </table>
+    <div class="centrar">
+        <button id="start">Comenzar</button>
+        <h3 id="info"></h3>
+    </div>
+    <script>
+        document.getElementById("start").onclick = function () {
+            opcionUsu1 = -1;
+            opcionUsu2 = -1;
+            document.getElementById("11").innerHTML = '';
+            document.getElementById("12").innerHTML = '';
+            document.getElementById("21").innerHTML = '';
+            document.getElementById("22").innerHTML = '';
+            document.getElementById("info").innerHTML = "Elige un numero JUGADOR 1";
+            document.onkeyup = partida;
+            console.log(opcionUsu1 + " " + opcionUsu2);
+        };
+
+        var puntuacion = new Array(0, 0);
+
+        var opcionUsu1;
+        var opcionUsu2;
+        var ganador;
+
+        var tecla;
+        var cuenta = null;
+        var cuenta2 = null;
+
+        function partida(option) {
+            if (option == null) {
+                cuenta = setTimeout(function () {
+                    document.getElementById("12").innerHTML = '<img src="img/' + opcionUsu1 + '.svg" alt="">';
+                    document.getElementById("22").innerHTML = '<img src="img/' + opcionUsu2 + '.svg" alt="">';
+                    cuenta2 = setTimeout(function () {
+                        ganador = comprobar(opcionUsu1 + opcionUsu2);
+                        mostrar();
+                    }, 1000);
+                }, 1000);
+            } else {
+                tecla = opcion(option.key);
+                console.log(tecla);
+                if (tecla != -1) {
+                    if (opcionUsu1 == -1) {
+                        opcionUsu1 = tecla;
+
+                        //Al ser correcta el cambio debemos cambiar ya el texto de visualizacion para evitar problemas mas adelante
+                        document.getElementById("info").innerHTML = "Elige un numero JUGADOR 2";
+                    } else if (opcionUsu2 == -1) {
+                        opcionUsu2 = tecla;
+                        document.onkeyup = null;
+                        partida(null);
+                    }
+                } else {
+                    document.getElementById("info").innerHTML = "Escoge un numero entre 0 y 5";
+                    document.onkeyup = partida;
+                }
+            }
+        }
+
+        function mostrar() {
+            if (ganador == 0) {
+                document.getElementById("11").innerHTML = '<img src="img/gana.svg" alt="">';
+                document.getElementById("21").innerHTML = '<img src="img/pierde.svg" alt="">';
+                document.getElementById("info").innerHTML = "Ganador el jugador 1";
+                puntuacion[0]++;
+            } else {
+                document.getElementById("11").innerHTML = '<img src="img/pierde.svg" alt="">';
+                document.getElementById("21").innerHTML = '<img src="img/gana.svg" alt="">';
+                document.getElementById("info").innerHTML = "Ganador el jugador 2";
+                puntuacion[1]++;
+            }
+
+            document.getElementById("puntuacion").innerHTML = "Victorias: " + puntuacion[0] + " - Victorias: " + puntuacion[1];
+        }
+
+        function opcion(key) {
+            var opcion = Number.parseInt(key);
+
+            if (isNaN(opcion) || (opcion < 0 || opcion > 5)) {
+                opcion = -1;
+            }
+
+            return opcion;
+        }
+
+        function comprobar(num) {
+            if ((num % 2) == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 2</title>
+</head>
+
+<body>
+    <label for=""> Metros Cuadrados - </label>
+    <input type="number" id="metros">
+    <label for=""> Altura - </label>
+    <input type="number" id="altura">
+    <label for=""> Numero de habitaciones - </label>
+    <input type="number" id="habit">
+    <label for=""> Precio - </label>
+    <input type="number" id="precio">
+    <br>
+    <br>
+    <button type="button" onclick="introducir();">Introducir</button>
+    <p id="return"></p>
+    <script>
+        //Declaro las variables que le pasare al objeto por el contructor
+        var metros, altura, habit, precio;
+        //Declaro una variable que sera el objeto piso
+        var piso;
+
+        /** 
+         * Constructor del objeto piso
+         * @param float - Numero de metros cuadrados 
+         * @param float - altura del piso
+         * @param int - numero de habitaciones
+         * @param float - precio del piso
+         */
+        function Piso(mc, a, nh, p) {
+            this.metrosCuadrados = mc;
+            this.altura = a;
+            this.numHabitaciones = nh;
+            this.precio = p;
+
+            /**
+             * Function para mostrar todos los datos del objeto
+             * @return String - Todos los datos del objeto
+             */
+            this.toString = function () {
+                return this.metrosCuadrados + "m<sup>2</sup> / " + this.altura + "m / " + this.numHabitaciones + " habitaciones / " + this.precio + "€<br>"
+            }
+
+            /**
+             * Function para calcular el IVA
+             * @param int - entero que se refiere al porcentaje
+             * @return float - float del resultado del iva
+             */
+            this.calcularIVA = function (porcentaje) {
+                return precio * (porcentaje / 100);
+            }
+        }
+
+        /**
+         * Function para comprobar que los datos introducidos son correctos
+         * @return boolean
+         */
+        function comprobar() {
+            metros = document.getElementById("metros").value;
+            altura = document.getElementById("altura").value;
+            habit = document.getElementById("habit").value;
+            precio = document.getElementById("precio").value;
+
+            if (metros.replace(/ /gi, "") == "" || isNaN(Number.parseFloat(metros)) || Number.parseFloat(metros) <= 0) {
+                alert("Metros mal introducido, ni numero menor que cero, ni letra, ni debe estar vacio");
+            } else if (altura.replace(/ /gi, "" || isNaN(Number.parseFloat(altura)) || Number.parseFloat(altura) <= 0) == "") {
+                alert("Altura mal introducida, ni numero menor que cero, ni letra, ni debe estar vacio");
+            } else if (habit.replace(/ /gi, "" || isNaN(Number.parseInt(habit)) || Number.parseInt(habit) <= 0) == "") {
+                alert("Habitaciones mal introducidas, ni numero menor que cero, ni letra, ni debe estar vacio");
+            } else if (precio.replace(/ /gi, "" || isNaN(Number.parseFloat(precio)) || Number.parseFloat(precio) <= 0) == "") {
+                alert("Precios mal introducido, ni numero menor que cero, ni letra, ni debe estar vacio");
+            } else {
+                return true;
+            }
+
+            return false;
+        }
+
+        function introducir() {
+            if (comprobar()) {
+                piso = new Piso(Number.parseFloat(metros), Number.parseFloat(altura), Number.parseInt(habit), Number.parseFloat(precio));
+
+                document.getElementById("return").innerHTML = piso.toString();
+                document.getElementById("return").innerHTML += piso.calcularIVA(21) + "<br>";
+
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 5</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .rectangulo {
+            width: 100px;
+            height: 50px;
+            background-color: red;
+            border: 2px black solid;
+            margin: 15px;
+            display: inline-block;
+        }
+
+        .centrar {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td class="rectangulo" id="0"></td>
+            <td class="rectangulo" id="1"></td>
+            <td class="rectangulo" id="2"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="3"></td>
+            <td class="rectangulo" id="4"></td>
+            <td class="rectangulo" id="5"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="6"></td>
+            <td class="rectangulo" id="7"></td>
+            <td class="rectangulo" id="8"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="9"></td>
+            <td class="rectangulo" id="10"></td>
+            <td class="rectangulo" id="11"></td>
+        </tr>
+    </table>
+    <div class="centrar">
+        <p id="tiempo" class="centrar"></p>
+        <p id="vida"></p>
+        <p id="aciertos">Aciertos seguidos: 0</p>
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <br>
+        <button id="sumVidas" style="margin-top: 10px">Vida +</button>
+    </div>
+
+    <script>
+
+        //Declaro los audios como constante porque no van a cambiar nunca
+        const moneda = new Audio("audios/moneda.mp3");
+        const gameOver = new Audio("audios/gameOver.mp3");
+        const muerte = new Audio("audios/muerte.mp3");
+
+        //Inicio variables para poder controlar varios aspectos del programa como el numero de aciertos, el tiempo, las vidas, etc
+        var aciertos = 0;
+        var interval = null;
+        var valido = true;
+        var idActual = -1;
+        var tiempoInicial = 10;
+        var tiempoFinal = tiempoInicial;
+        var vidas = 5;
+
+        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+        document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+        //Declaro como constante todos los rectangulos que usare durante el juego utilizando un querySelectorAll()
+        const elements = document.querySelectorAll(".rectangulo");
+
+        //Doy un evento a cada boton
+
+        //Iniciar el juego
+        document.getElementById("start").onclick = start;
+
+        //Detener el juego
+        document.getElementById("stop").onclick = stop;
+
+        //Sumar las vidas
+        document.getElementById("sumVidas").onclick = function () {
+            vidas++;
+            document.getElementById("vida").innerHTML = "Vidas " + vidas;
+            moneda.play();
+        };
+
+        //Funcion para detener el juego, devuelve las variables a sus valores por defecto para poder iniciar otro juego mas adelante
+        function stop() {
+            if (interval != null) {
+                clearInterval(interval);
+                interval = null;
+                tiempoInicial = 10;
+                tiempoFinal = tiempoInicial;
+                vidas = 5;
+                aciertos = 0;
+                idActual = -1;
+                valido = true;
+                document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+
+                //Con este for recorro el resultado del querySelectorAll() y elimino el evento asociado a cada rectangulo ademas de pintarlos en negro
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].onmouseenter = null;
+                    elements[i].style.backgroundColor = "black";
+                }
+            }
+        }
+
+        //Funcion para iniciar el juego, inicia el intervalo y llama al resto de funciones para realizar comprobaciones
+        function start() {
+            //Compruebo si hay suficientes vidas para seguir jugando
+            if (vidas > 0) {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].onmouseenter = comprobarCelda;
+                }
+                if (aciertos > 0) {
+                    if (aciertos == 3 && tiempoInicial > 3) {
+                        tiempoInicial--;
+                        aciertos = 0;
+                    }
+                }
+                tiempoFinal = tiempoInicial;
+                document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                if (interval == null) {
+                    interval = setInterval(function () {
+                        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                        tiempoFinal--;
+                        if (tiempoFinal < 0) {
+                            tiempoFinal = tiempoInicial;
+                            vidas--;
+                            document.getElementById("vida").innerHTML = "Vidas " + vidas;
+                            muerte.play();
+                        }
+
+                        if (vidas == 0) {
+                            start();
+                        }
+                    }, 1000);
+                }
+                var id
+                if (valido == true) {
+                    id = randomId();
+                    cambiarColor(id);
+                }
+            } else {
+                gameOver.play();
+                stop();
+                alert("¡HAS PERDIDO!");
+            }
+
+        }
+
+        /**
+         * Funcion para cambiar el color del rectangulo
+         * @param int - ID del rectangulo
+         */
+        function cambiarColor(id) {
+            if (idActual != -1) {
+                document.getElementById(idActual).style.backgroundColor = "red";
+            } else {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.backgroundColor = "red";
+                }
+            }
+            idActual = id;
+
+            document.getElementById(idActual).style.backgroundColor = "blue";
+        }
+
+        /**
+         * Funcion para crear id aleatorio, si es el mismo que ya tenemos crea otro
+         * @return int - ID para el rectangulo
+         */
+        function randomId() {
+            do {
+                var idRandom = Math.floor(Math.random() * 12);
+            } while (idRandom == idActual);
+            return idRandom;
+        }
+
+
+        //Comprobar si la celda es la correcta para sumar aciertos o descontar vidas
+        function comprobarCelda() {
+            if (this === document.getElementById(idActual)) {
+                aciertos++;
+                valido = true;
+            } else {
+                muerte.play();
+                aciertos = 0;
+                vidas--;
+                document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+                valido = false
+            }
+            document.getElementById("aciertos").innerHTML = "Aciertas seguidos: " + aciertos;
+            start();
+        }
+
+    </script>
+</body>
+
+</html>

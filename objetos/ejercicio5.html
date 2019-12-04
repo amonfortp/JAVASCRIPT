@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 5</title>
+</head>
+
+<body>
+    <button type="button" onclick="cambiarFondo()">Cambiar color</button>
+    <script>
+        function cambiarFondo() {
+            var red = Math.floor(Math.random() * 256);
+            var green = Math.floor(Math.random() * 256);
+            var blue = Math.floor(Math.random() * 256);
+            var color = "rgb(" + red + "," + green + "," + blue + ")";
+
+            document.body.style.background = color;
+        }
+    </script>
+</body>
+
+</html>

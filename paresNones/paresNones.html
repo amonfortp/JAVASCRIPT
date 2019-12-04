@@ -1,0 +1,65 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 6</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .centrar {
+            text-align: center;
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="centrar">Pares o Nones</h1>
+    <h3 class="centrar">Jugador 1 (Pares) - Jugador 2 (Nones)</h3>
+    <table>
+        <tr>
+            <td id="11"></td>
+            <td id="12"></td>
+            <td id="22"></td>
+            <td id="21"></td>
+        </tr>
+    </table>
+    <script>
+        var opcionUsu1 = opcion();
+        var opcionUsu2 = opcion();
+        var ganador = comprobar(opcionUsu1 + opcionUsu2);
+
+        mostrar();
+
+        function mostrar() {
+            document.getElementById("12").innerHTML = '<img src="img/' + opcionUsu1 + '.svg" alt="">';
+            document.getElementById("22").innerHTML = '<img src="img/' + opcionUsu2 + '.svg" alt="">';
+
+            if (ganador == 0) {
+                document.getElementById("11").innerHTML = '<img src="img/gana.svg" alt="">';
+                document.getElementById("21").innerHTML = '<img src="img/pierde.svg" alt="">';
+            } else {
+                document.getElementById("11").innerHTML = '<img src="img/pierde.svg" alt="">';
+                document.getElementById("21").innerHTML = '<img src="img/gana.svg" alt="">'
+            }
+        }
+
+        function opcion() {
+            return Math.round(Math.random() * 5);
+        }
+
+        function comprobar(num) {
+            if ((num % 2) == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 3</title>
+</head>
+
+<body>
+    <p id="return"></p>
+    <script>
+        document.onkeyup = show;
+        var array = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
+
+        function show(e) {
+            if (/[a-zA-Z]/.test(e.key.toUpperCase())) {
+                document.getElementById("return").innerHTML = calculateDNI(e.key.toUpperCase()) + " DNIs have the letter " + e.key.toUpperCase();
+            } else {
+                document.getElementById("return").innerHTML = "Character no valid";
+            }
+        }
+
+        function calculateDNI(char) {
+            var count = 0;
+            var num = 0001;
+
+            while (num <= 9999) {
+                if (array[num % 23] == char) {
+                    count++;
+                }
+                num++;
+            }
+
+            return count;
+        }
+    </script>
+</body>
+
+</html>

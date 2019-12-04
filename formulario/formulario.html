@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+    <header>
+        <h1>FORMULARIO</h1>
+    </header>
+    <form action="">
+        <fieldset>
+            <legend>NAME SURNAME SURNAME2</legend>
+            <label for="name">Name - </label>
+            <input type="text" id="name">
+            <label for="surname">Surname - </label>
+            <input type="text" id="surname">
+            <label for="surname2">Surname2 - </label>
+            <input type="text" id="surname2">
+        </fieldset>
+        <fieldset>
+            <legend>ADDRESS STREET-NUMBER DOOR POST-CODE</legend>
+            <label for="address">Address - </label>
+            <input type="text" id="address">
+            <label for="streetnumber">Street-Number - </label>
+            <input type="text" id="streetnumber">
+            <label for="door">Door - </label>
+            <input type="text" id="door">
+            <label for="postcode">POST-CODE - </label>
+            <input type="text" id="postcode">
+        </fieldset>
+        <fieldset>
+            <legend>PHONE MOBILE</legend>
+            <label for="phone">PHONE - </label>
+            <input type="text" id="phone">
+            <label for="mobile">MOBILE - </label>
+            <input type="text" id="mobile">
+        </fieldset>
+        <fieldset>
+            <legend>EMAIL PURPOSE GENDER</legend>
+            <label for="email">EMAIL - </label>
+            <input type="text" id="email">
+            <br>
+            <br>
+            <label for="purpose">PURPOSE</label>
+            <br>
+            <textarea id="purpose" rows="3" cols="40"></textarea>
+            <fieldset>
+                <legend>GENDER</legend>
+                <label>GENDER - </label>
+                <input type="radio" id="gender1" name="gender" value="male"> Male
+                <input type="radio" id="gender2" name="gender" value="female"> Female
+            </fieldset>
+        </fieldset>
+        <button type="button" onclick="validarTodo()">Enviar</button>
+    </form>
+    <script>
+
+        const expRegPhone = /^(\+34|0034|34)?[9][0-9]{8}$/;
+        const expRegMobile = /^(\+34|0034|34)?[6|7][0-9]{8}$/;
+        const expRegCorreo = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+
+        var name, surname, surname2, address, streetnumber, door, postcode, phone, mobile, email, purpose, gender;
+
+        function validarTodo() {
+            name = document.getElementById("name").value.replace(/ /gi, "");
+            surname = document.getElementById("surname").value.replace(/ /gi, "");
+            surname2 = document.getElementById("surname2").value.replace(/ /gi, "");
+            address = document.getElementById("address").value.replace(/ /gi, "");
+            streetnumber = document.getElementById("name").value.replace(/ /gi, "");
+            door = document.getElementById("door").value.replace(/ /gi, "");
+            postcode = document.getElementById("postcode").value.replace(/ /gi, "");
+            phone = document.getElementById("phone").value.replace(/ /gi, "");
+            mobile = document.getElementById("mobile").value.replace(/ /gi, "");
+            email = document.getElementById("email").value.replace(/ /gi, "");
+            purpose = document.getElementById("purpose").value.replace(/ /gi, "");
+            if (document.getElementById("gender1").checked || document.getElementById("gender2").checked) {
+                gender = true;
+            }
+
+            if (!comprobar1()) {
+                alert('No has introducido algun dato en "NAME SURNAME SURNAME2"');
+            } else if (!comprobar2()) {
+                alert('No has introducido algun dato en "ADDRESS STREET-NUMBER DOOR POST-CODE"');
+            } else if (!comprobar3()) {
+                alert('No has introducido algun dato en "PHONE MOBILE" o no es valido');
+            } else if (!comprobar4()) {
+                alert('No has introducido/marcado algun dato en "EMAIL PURPOSE GENDER" o no es valido');
+            } else {
+                alert("Todo correcto");
+            }
+        }
+
+        function comprobar1() {
+            if (name == "" || surname == "" || surname2 == "") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function comprobar2() {
+            if (address == "" || streetnumber == "" || door == ""
+                || postcode == "" || isNaN(Number.parseInt(postcode))) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function comprobar3() {
+            if (phone == "" || mobile == "") {
+                return false;
+            } else {
+                if (!expRegPhone.test(phone) || !expRegMobile.test(mobile)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+        }
+
+        function comprobar4() {
+            if (email == "" || purpose == "" || !gender) {
+                return false;
+            } else {
+                if (!expRegCorreo.test(email)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

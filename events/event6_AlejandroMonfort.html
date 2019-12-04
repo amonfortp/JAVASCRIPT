@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 6</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .rectangulo {
+            width: 100px;
+            height: 50px;
+            background-color: red;
+            border: 2px black solid;
+            margin: 15px;
+            display: inline-block;
+        }
+
+        .centrar {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td class="rectangulo" id="0"></td>
+            <td class="rectangulo" id="1"></td>
+            <td class="rectangulo" id="2"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="3"></td>
+            <td class="rectangulo" id="4"></td>
+            <td class="rectangulo" id="5"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="6"></td>
+            <td class="rectangulo" id="7"></td>
+            <td class="rectangulo" id="8"></td>
+        </tr>
+        <tr>
+            <td class="rectangulo" id="9"></td>
+            <td class="rectangulo" id="10"></td>
+            <td class="rectangulo" id="11"></td>
+        </tr>
+    </table>
+    <div class="centrar">
+        <p id="tiempo" class="centrar"></p>
+        <p id="vida"></p>
+        <p id="aciertos">Aciertos seguidos: 0</p>
+        <p id="total">Total: 0</p>
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <br>
+        <button id="sumVidas" style="margin-top: 10px">Vida +</button>
+    </div>
+
+    <script>
+
+        //Declaro los audios como constante porque no van a cambiar nunca
+        const moneda = new Audio("audios/moneda.mp3");
+        const gameOver = new Audio("audios/gameOver.mp3");
+        const muerte = new Audio("audios/muerte.mp3");
+
+        //Inicio variables para poder controlar varios aspectos del programa como el numero de aciertos, el tiempo, las vidas, etc
+        var aciertos = 0;
+
+        //Intervalo para comprobar que si la cuenta atras llega a cero quitar una vida
+        var interval = null;
+
+        //Intervalo para pintar un segundo rectangulo en caso de acertar 3 en menos de 3 segundos
+        var interval2 = null;
+        var valido1 = true;
+        var valido2 = true;
+        var idActual = [-1, -1];
+        var tiempoInicial = 10;
+        var tiempoFinal = tiempoInicial;
+        var vidas = 5;
+        var auxIntervalo2 = 0;
+        var auxAciertos = 0;
+
+        var total = 0;
+
+        //Variable para saber si el juego es con dos rectangulos o uno
+        var juegoDoble = false;
+
+        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+        document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+        //Declaro como constante todos los rectangulos que usare durante el juego utilizando un querySelectorAll()
+        const elements = document.querySelectorAll(".rectangulo");
+
+        //Doy un evento a cada boton
+
+        //Iniciar el juego
+        document.getElementById("start").onclick = start;
+
+        //Detener el juego
+        document.getElementById("stop").onclick = stop;
+
+        //Sumar las vidas
+        document.getElementById("sumVidas").onclick = function () {
+            vidas++;
+            document.getElementById("vida").innerHTML = "Vidas " + vidas;
+            moneda.play();
+        };
+
+        //Funcion para detener el juego, devuelve las variables a sus valores por defecto para poder iniciar otro juego mas adelante
+        function stop() {
+            if (interval != null) {
+                clearInterval(interval);
+                interval = null;
+                clearInterval(interval2);
+                interval2 = null;
+                tiempoInicial = 10;
+                tiempoFinal = tiempoInicial;
+                vidas = 5;
+                aciertos = 0;
+                idActual = [-1, -1];
+                valido1 = true;
+                valido2 = false;
+                juegoDoble = false;
+                auxIntervalo2 = 0;
+                auxAciertos = 0;
+                document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+                document.getElementById("aciertos").innerHTML = "Aciertos seguidos: " + aciertos;
+
+                //Con este for recorro el resultado del querySelectorAll() y elimino el evento asociado a cada rectangulo ademas de pintarlos en negro
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].onmouseenter = null;
+                    elements[i].style.backgroundColor = "black";
+                }
+            }
+        }
+
+        //Funcion para iniciar el juego, inicia el intervalo y llama al resto de funciones para realizar comprobaciones
+        function start() {
+            //Compruebo si hay suficientes vidas para seguir jugando
+            if (vidas > 0) {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].onmouseenter = comprobarCelda;
+                }
+
+                if (aciertos == 3 && tiempoInicial > 3) {
+                    tiempoInicial--;
+                    auxAciertos = aciertos;
+                    aciertos = 0;
+                }
+
+                if (interval2 == null) {
+                    interval2 = setInterval(function () {
+                        auxIntervalo2++;
+                        if (auxIntervalo2 <= 3 && auxAciertos == 3) {
+                            juegoDoble = true;
+                            valido1 = true;
+                            valido2 = true;
+                        }
+                    }, 1000);
+                } else if (juegoDoble == true) {
+                    clearInterval(interval2);
+                    interval2 = null;
+                }
+
+                if (interval == null) {
+                    interval = setInterval(function () {
+                        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                        tiempoFinal--;
+                        if (tiempoFinal < 0) {
+                            tiempoFinal = tiempoInicial;
+                            vidas--;
+                            document.getElementById("vida").innerHTML = "Vidas " + vidas;
+                            muerte.play();
+                        }
+
+                        if (vidas == 0) {
+                            start();
+                        }
+                    }, 1000);
+                }
+                var arrayId = [];
+
+                if (juegoDoble == false) {
+                    console.log(false + " " + valido1 + " " + valido2);
+                    if (valido1 == true) {
+                        arrayId = randomId();
+                        cambiarColor(arrayId[0], 0);
+                        valido1 = false;
+                    }
+                } else {
+                    console.log(true + " " + valido1 + " " + valido2);
+                    if (valido1 == true && valido2 == true) {
+                        arrayId = randomId();
+                        cambiarColor(arrayId[0], 0);
+                        cambiarColor(arrayId[1], 1);
+                        console.log(arrayId + " " + idActual);
+                        valido1 = false;
+                        valido2 = false;
+                        tiempoFinal = tiempoInicial;
+                        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempoFinal;
+                    }
+                }
+            } else {
+                gameOver.play();
+                stop();
+                alert("¡HAS PERDIDO!");
+            }
+
+        }
+
+        /**
+         * Funcion para cambiar el color del rectangulo
+         *  @param int - id del rectangulo que se debe cambiar de color
+         *  @param int - posicion del array
+         */
+        function cambiarColor(id, pos) {
+            if (idActual[pos] != -1) {
+                document.getElementById(idActual[pos]).style.backgroundColor = "red";
+            } else {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.backgroundColor = "red";
+                }
+            }
+            idActual[pos] = id;
+
+            document.getElementById(idActual[pos]).style.backgroundColor = "blue";
+            if (idActual[0] != -1) {
+                document.getElementById(idActual[0]).style.backgroundColor = "blue";
+            }
+        }
+
+        /**
+         * Funcion para crear id aleatorio, si es el mismo que ya tenemos crea otro
+         * @return array - array que contiene dos id de dos rectangulos
+         */
+        function randomId() {
+            do {
+                id1 = Math.floor(Math.random() * 12);
+                id2 = Math.floor(Math.random() * 12);
+            } while (id1 == id2 || id1 == idActual[0] || id2 == idActual[1]);
+            return [id1, id2];
+        }
+
+
+        //Comprobar si la celda es la correcta para sumar aciertos o descontar vidas
+        function comprobarCelda() {
+            if (this === document.getElementById(idActual[0])) {
+                aciertos++;
+                valido1 = true;
+                total++;
+            } else if (this === document.getElementById(idActual[1])) {
+                aciertos++;
+                valido2 = true;
+                total++;
+            } else {
+                muerte.play();
+                aciertos = 0;
+                vidas--;
+                document.getElementById("vida").innerHTML = "Vidas: " + vidas;
+            }
+            document.getElementById("aciertos").innerHTML = "Aciertas seguidos: " + aciertos;
+            document.getElementById("total").innerHTML = "Total: " + total;
+            start();
+        }
+
+    </script>
+</body>
+
+</html>

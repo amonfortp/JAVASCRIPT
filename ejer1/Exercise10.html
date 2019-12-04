@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 10</title>
+    <script src="js/myScript.js"></script>
+</head>
+
+<body>
+    <h1 id="titulo"></h1>
+    <h3 id="mes"></h3>
+    <p id="precioMes"></p>
+    <h3 id="mesPlus"></h3>
+    <p id="precioMesPlus"></p>
+
+    <script>
+        //El precio mensual son 30 euros al MES
+        const PRECIOMENSUAL = 100;
+
+        //El precio anual es el PRECIOMENSUAL * 12
+        const PRECIOANUAL = PRECIOMENSUAL * 12;
+
+
+        var o = confirm("Do you want to subscribe to this page?");
+
+        if (o === true) {
+            document.getElementById("titulo").innerHTML = "PRECIOS";
+            document.getElementById("mes").innerHTML = "Precio al MES";
+            document.getElementById("precioMes").innerHTML = PRECIOMENSUAL + "€/mes";
+            document.getElementById("mesPlus").innerHTML = "Precio al AÑO)";
+            document.getElementById("precioMesPlus").innerHTML = PRECIOANUAL + "€/mes";
+            document.write("<br><br>EL PRIMER MES ES GRATIS");
+        } else {
+            document.getElementById("titulo").innerHTML = "PAGA O VETE YA!";
+        }
+    </script>
+    <noscript>
+        <h1>PUEDE TENER DESACTICADO JAVASCRIPT EN SU NAVEGADOR</h1>
+    </noscript>
+</body>
+
+</html>

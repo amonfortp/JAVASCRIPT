@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event 6</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .cuadrado {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            border: 2px black solid;
+            margin: 15px;
+            display: inline-block;
+        }
+
+        .centrar {
+            text-align: center;
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td class="cuadrado" id="0"></td>
+            <td class="cuadrado" id="1"></td>
+            <td class="cuadrado" id="2"></td>
+        </tr>
+        <tr>
+            <td class="cuadrado" id="3"></td>
+            <td class="cuadrado" id="4"></td>
+            <td class="cuadrado" id="5"></td>
+        </tr>
+        <tr>
+            <td class="cuadrado" id="6"></td>
+            <td class="cuadrado" id="7"></td>
+            <td class="cuadrado" id="8"></td>
+        </tr>
+    </table>
+    <div class="centrar">
+        <button id="empezar">Empezar juego</button>
+        <p id="result">Aquí se avisa cuando acaba la partida y quien gana, es al azar quien comienza, si acaba el
+            tablero se reinicia el juego automaticamente</p>
+    </div>
+
+    <script>
+        //Guardar todos los cuadrados en una constante
+        const cuadrados = document.querySelectorAll(".cuadrado");
+        //Constante con las posibles victorias
+        const soluciones = new Array(
+            new Array(cuadrados[0], cuadrados[1], cuadrados[2]),
+            new Array(cuadrados[3], cuadrados[4], cuadrados[5]),
+            new Array(cuadrados[6], cuadrados[7], cuadrados[8]),
+            new Array(cuadrados[0], cuadrados[3], cuadrados[6]),
+            new Array(cuadrados[1], cuadrados[4], cuadrados[7]),
+            new Array(cuadrados[2], cuadrados[5], cuadrados[8]),
+            new Array(cuadrados[0], cuadrados[4], cuadrados[8]),
+            new Array(cuadrados[2], cuadrados[4], cuadrados[6]));
+
+        //Contienen las opciones del PC y el jugador
+        var seleccionadosUsu = [];
+        var seleccionadosPC = [];
+
+        //Variable para saber quien empieza el juego  cada ronda
+        var primero = -1;
+
+        //Variable para saber si se a podido cambiar la celda 
+        var valido = false;
+
+        //Variable para el intervalo del PC
+        var intervalPc = null;
+
+        //Iniciar eventos
+        document.getElementById("empezar").onclick = startGame;
+
+        //Funcion que inicia el juego, tambien elige a azar el orden de los turnos por partida
+        //Y llama al resto de funciones
+        function startGame() {
+
+            //En caso de ser el comienzo de la partida se escoge quien comenzara al azar
+            if (primero == -1) {
+                primero = Math.round(Math.random());
+                if (primero == 0) {
+                    document.getElementById("result").innerHTML = "Comienza el Usuario cada ronda";
+                } else {
+                    document.getElementById("result").innerHTML = "Comienza el PC cada ronda";
+                }
+            }
+
+            //Me aseguro de eliminar el intervalo del PC
+            if (intervalPc != null) {
+                clearInterval(intervalPc);
+                intervalPc = null;
+            }
+
+            //Este if organiza los turnos y comprueba antes de pasar de turno si hay que reiniciar el trablero porque no quedan celdas o si alguien a ganado
+            if (primero == 0) {
+                for (var i = 0; i < cuadrados.length; i++) {
+                    cuadrados[i].ondblclick = comprobarSeleccionUsu;
+                }
+                if (valido == true) {
+                    if (!comprobarSolucion(seleccionadosUsu)) {
+                        if ((seleccionadosPC.length + seleccionadosUsu.length) == 9) {
+                            reiniciar();
+                        } else {
+                            primero++;
+                            valido = false;
+                            startGame();
+                        }
+                    } else {
+                        document.getElementById("result").innerHTML = "Ha ganado el Usuario";
+                    }
+                }
+            } else {
+                for (var i = 0; i < cuadrados.length; i++) {
+                    cuadrados[i].ondblclick = null;
+                }
+                var doc = null;
+                var tiempo = Math.round(Math.random() * 5) + 1;
+                intervalPc = setInterval(function () {
+                    doc = cuadrados[Math.round(Math.random() * 8)];
+                    comprobarSeleccionPc(doc);
+                }, tiempo * 1000);
+                if (valido == true) {
+                    clearInterval(intervalPc);
+                    intervalPc = null;
+                    if (!comprobarSolucion(seleccionadosPC)) {
+                        if ((seleccionadosPC.length + seleccionadosUsu.length) == 9) {
+                            reiniciar();
+                        } else {
+                            primero--;
+                            valido = false;
+                            startGame();
+                        }
+                    } else {
+                        document.getElementById("result").innerHTML = "Ha ganado el PC";
+                    }
+                }
+            }
+        }
+
+        /**
+         * Funcion para comprobar si las elecciones del usuario o del PC son una solucion
+         * @param array - array que contiene las elecciones del usuario o del PC
+         * @return boolean - devuelve true si las selecciones son una solucion
+         */
+        function comprobarSolucion(array) {
+            var acierto = 0;
+            if (array.length > 2) {
+                for (var x = 0; x < soluciones.length; x++) {
+                    for (var a = 0; a < array.length; a++) {
+                        if (soluciones[x].indexOf(array[a]) != -1) {
+                            acierto++;
+                        }
+                        if (acierto > 2) {
+                            return true;
+                        }
+                    }
+                    acierto = 0
+                }
+            }
+            return false;
+        }
+
+        //Comprueba que la eleccion del usuario no esta ya seleccionada
+        function comprobarSeleccionUsu() {
+            if (seleccionadosUsu.indexOf(this) == -1 && seleccionadosPC.indexOf(this) == -1) {
+                seleccionadosUsu.push(this);
+                this.style.background = "green"
+                valido = true;
+            } else {
+                valido = false;
+            }
+            startGame();
+        }
+
+        //Comprueba que la eleccion del ordenador no esta ya seleccionada
+        function comprobarSeleccionPc(doc) {
+            if (seleccionadosPC.indexOf(doc) == -1 && seleccionadosUsu.indexOf(doc) == -1) {
+                seleccionadosPC.push(doc);
+                doc.style.background = "red"
+                valido = true;
+            } else {
+                valido = false;
+            }
+            startGame();
+        }
+
+        //Reinicia el tablero en caso de no quedar celdas, regresa todas las variables a como
+        // estavban por defecto. A excepcion de quien comienza cada turno para respetar los mismo
+        function reiniciar() {
+            for (var i = 0; i < cuadrados.length; i++) {
+                cuadrados[i].style.background = "black";
+            }
+            seleccionadosUsu = [];
+            seleccionadosPC = [];
+            valido = false;
+            clearInterval(intervalPc);
+            intervalPc = null;
+            startGame();
+        }
+    </script>
+</body>
+
+</html>

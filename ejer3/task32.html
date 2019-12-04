@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task 32</title>
+</head>
+
+<body>
+    <label for="">Primer numero</label>
+    <input type="number" id="number" min="999999999" min="9999999999" value="1234567892">
+    <button type="button" onclick="ordenar(1);">Quicksort</button>
+    <button type="button" onclick="ordenar(2);">MergeSort</button>
+    <button type="button" onclick="ordenar(3);">Bubble</button>
+    <button type="button" onclick="ordenar(4);">Sort</button>
+    <p id="return"></p>
+
+    <script>
+        var num;
+
+        function ordenar(opcion) {
+            num = document.getElementById("number").value;
+            var array = num.split("");
+            if (opcion == 1) {
+                document.getElementById("return").innerHTML = ordenarQS(array).join(' ');
+            } else if (opcion == 2) {
+
+            } else if (opcion == 3) {
+
+            } else if (opcion == 4) {
+
+            }
+        }
+
+        function ordenarQS(array) {
+
+
+
+            if (array <= 1) {
+                return array;
+            } else {
+                var pivote = array.pop();
+                var der = [];
+                var iz = [];
+                var a = [];
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] > pivote) {
+                        iz.push(array[i]);
+                    } else {
+                        der.push(array[i]);
+                    }
+                }
+
+                return a.concat(ordenarQS(iz), pivote, ordenarQS(der));
+            }
+        }
+    </script>
+</body>
+
+</html>
