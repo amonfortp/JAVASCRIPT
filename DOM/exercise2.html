@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 2</title>
+</head>
+<style>
+    td {
+        border: 1px black solid;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <button type="button" onclick="casiPrimos(document.getElementsByTagName('td'))">Calcular casi primos</button>
+    <table>
+
+    </table>
+</body>
+<script>
+    crearTabla();
+
+    function crearTabla() {
+        var count = 1;
+        var celda, fila;
+        var tabla = document.getElementsByTagName("table");
+
+        for (var x = 0; x < 100; x++) {
+            fila = document.createElement("tr");
+            for (var y = 0; y < 100; y++) {
+                celda = document.createElement("td");
+                fila.appendChild(celda);
+                celda.innerHTML = count;
+                count++;
+            }
+            tabla[0].appendChild(fila);
+        }
+    }
+
+    function casiPrimos(celdas) {
+        var count = 0;
+        for (var i = 0; i < celdas.length; i++) {
+            for (var a = 0; a < Number(celdas[i].innerHTML); a++) {
+                if (count > 3) {
+                    a = Number(celdas[i].innerHTML);
+                } else {
+                    if ((Number(celdas[i].innerHTML) % Number(celdas[a].innerHTML)) == 0) {
+                        count++;
+                    }
+                }
+            }
+            if (count == 3) {
+                celdas[i].style.background = "yellow";
+            }
+            count = 0;
+        }
+    }
+</script>
+
+</html>

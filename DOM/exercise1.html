@@ -9,7 +9,28 @@
 </head>
 
 <body>
+    <h1>Ejercicio 1</h1>
+    <button type="button" id="add">Añadir</button>
+    <ul>
 
+    </ul>
 </body>
+
+<script>
+    var lista;
+    document.getElementById("add").onclick = add;
+
+    function add() {
+        lista = document.getElementsByTagName("ul");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(numRandom()));
+        lista[0].appendChild(li);
+    }
+
+    function numRandom() {
+        return Math.round(Math.random() * 100);
+    }
+
+</script>
 
 </html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 3</title>
+</head>
+<style>
+    label {
+        display: block;
+    }
+</style>
+
+<body>
+    <h1>100 CHECKBOXS</h1>
+    <button type="button" id="marcar">Marcar todos</button>
+    <button type="button" id="desmarcar">Desmarcar todos</button>
+    <div>
+    </div>
+</body>
+<script>
+    checkbox();
+    var check = true;
+
+    document.getElementById("marcar").onclick = function () {
+        var input = document.getElementsByTagName("input");
+        for (var i = 0; i < input.length; i++) {
+            input[i].checked = check;
+        }
+
+        check = false;
+    };
+
+    document.getElementById("desmarcar").onclick = function () {
+        var input = document.getElementsByTagName("input");
+        for (var i = 0; i < input.length; i++) {
+            input[i].checked = check;
+        }
+
+        check = true;
+    };
+
+    function checkbox() {
+        var div = document.getElementsByTagName("div");
+        var input, label;
+
+        for (var i = 0; i < 100; i++) {
+            label = document.createElement("label");
+            input = document.createElement("input");
+            input.type = "checkbox";
+            label.appendChild(input);
+            label.innerHTML += numRandom();
+            div[0].appendChild(label);
+        }
+    }
+
+    function numRandom() {
+        return Math.round(Math.random() * 100);
+    }
+
+    function marcar() {
+        var input = document.getElementsByTagName("input");
+        for (var i = 0; i < input.length; i++) {
+            input[i].checked = check;
+        }
+    }
+</script>
+
+</html>

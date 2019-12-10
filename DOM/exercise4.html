@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 4</title>
+</head>
+
+<body>
+    <button type="button" id="reload">Reaparecer</button>
+    <button type="button" id="add">Nuevo párrafo</button>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero.</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero, atque?</p>
+</body>
+<script>
+
+    var outDesaparecer = null;
+    var parrafo;
+    actualizarP();
+
+
+    document.getElementById("reload").onclick = function () {
+        parrafo = document.getElementsByTagName("p");
+        for (var i = 0; i < parrafo.length; i++) {
+            parrafo[i].style.display = "block";
+        }
+    }
+
+    document.getElementById("add").onclick = function () {
+        var nuevoParrafo = document.createElement("P");
+        var texto = parrafo[Math.floor(Math.random() * parrafo.length)].innerHTML;
+        nuevoParrafo.innerHTML = texto;
+
+        document.getElementsByTagName("body")[0].appendChild(nuevoParrafo);
+
+        actualizarP();
+    }
+
+    function eliminar() {
+        this.parentNode.removeChild(this);
+
+        if (outDesaparecer != null) {
+            clearTimeout(outDesaparecer);
+            outDesaparecer = null;
+        }
+    }
+
+    function desaparecer(event) {
+        if (outDesaparecer == null) {
+            outDesaparecer = setTimeout(function () {
+                event.target.style.display = "none";
+            }, 250);
+        } else {
+            clearTimeout(outDesaparecer);
+            outDesaparecer = null;
+        }
+    }
+
+    function actualizarP() {
+        parrafo = document.getElementsByTagName("p");
+        for (var i = 0; i < parrafo.length; i++) {
+            parrafo[i].onclick = desaparecer;
+            parrafo[i].ondblclick = eliminar;
+        }
+    }
+</script>
+
+</html>
