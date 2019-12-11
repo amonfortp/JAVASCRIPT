@@ -27,6 +27,7 @@
 
 <body class="centrar">
     <button type="button" id="start">Comenzar</button>
+    <p id="marcador" style="text-align: center">Marcador</p>
     <p>El color elegido és: <span id="colores"></span></p>
     <table>
         <tr>
@@ -36,30 +37,131 @@
 
 </body>
 <script>
-    var intervalColor;
+    var intervalColor = null;
     var cuadrados = [];
     var colores = ["FireBrick ", "Gold", "HotPink", "OrangeRed", "Turquoise"];
+    var marcador = [0, 0, 0, 0, 0];
     var color = colorRandom();
-    document.getElementById("colores").innerHTML += color;
+    var velocidad = 2;
+    document.getElementById("colores").innerHTML = color;
     document.getElementById("colores").style.background = color;
 
     document.getElementById("start").onclick = addCuadrados;
 
+    document.onkeyup = teclas;
+
     function addCuadrados() {
-        var fila = document.getElementsByTagName("tr");
+        if (intervalColor == null) {
+            intervalColor = setInterval(function () {
+                var fila = document.getElementsByTagName("tr");
+                var cantidad;
 
-        for (var i = 0; i < Math.floor(Math.random * 4 + 1); i++) {
-            let nuevoCuadrado = document.createElement("td");
-            nuevoCuadrado.style.background = colorRandom();
+                if ((15 - cuadrados.length) > 4) {
+                    cantidad = Math.floor(Math.random() * 4 + 1);
+                } else {
+                    cantidad = 15 - cuadrados.length;
+                }
 
-            cuadrados.push(nuevoCuadrado);
+                for (var i = 0; i < cantidad; i++) {
+                    let nuevoCuadrado = document.createElement("td");
+                    nuevoCuadrado.style.background = colorRandom();
+
+                    cuadrados.push(nuevoCuadrado);
+                }
+
+                var colocado = [];
+
+                for (var i = 0; i < cuadrados.length; i++) {
+                    let cuadradoRandom = cuadrados[Math.floor(Math.random() * cuadrados.length)];
+                    if (colocado.indexOf(cuadradoRandom) == -1) {
+                        colocado.push(cuadradoRandom);
+                        fila[0].appendChild(cuadradoRandom);
+                    } else {
+                        i--;
+                    }
+
+                    cuadrados[i].ondblclick = eliminar;
+                    cuadrados[i].onmouseenter = cambiarColor;
+                }
+                comprobarCantidad();
+            }, velocidad * 1000);
+        }
+    }
+
+    function cambiarColor() {
+        var cRandom
+        do {
+            cRandom = colorRandom();
+        } while (this.style.backgroundColor == cRandom.toLowerCase() || cRandom == color);
+
+        this.style.background = cRandom;
+    }
+
+    function comprobarCantidad() {
+        if (cuadrados.length == 15) {
+            clearInterval(intervalColor);
+            intervalColor = null;
+            contarColor();
+            limpiarCuadrados();
+            color = colorRandom();
+            document.getElementById("colores").innerHTML = color;
+            document.getElementById("colores").style.background = color;
+            velocidad = Math.floor(Math.random() * 5 + 1);
+            addCuadrados();
+        }
+    }
+
+    function limpiarCuadrados() {
+        for (var i = 0; i < cuadrados.length; i++) {
+            document.getElementsByTagName("tr")[0].removeChild(cuadrados[i]);
+        }
+        cuadrados = [];
+    }
+
+    function contarColor() {
+        var posicion = colores.indexOf(color);
+
+        for (var i = 0; i < cuadrados.length; i++) {
+            if (cuadrados[i].style.backgroundColor == color.toLowerCase()) {
+                marcador[posicion]++;
+            }
         }
 
-
+        document.getElementById("marcador").innerHTML = colores[0] + " - " + marcador[0] + "  " + colores[1] + " - " + marcador[1] + "  " + colores[2] + " - " + marcador[2] + "  " + colores[3] + " - " + marcador[3] + "  " + colores[4] + " - " + marcador[4];
     }
 
     function colorRandom() {
         return colores[Math.floor(Math.random() * colores.length)];
+    }
+
+    function eliminar() {
+        var posicion = cuadrados.indexOf(this);
+        cuadrados.splice(1, posicion);
+        this.parentNode.removeChild(this);
+    }
+
+    function teclas(event) {
+        if (event.key == "p") {
+            teclaP();
+        } else if (event.key == "s") {
+            teclaS();
+        }
+    }
+
+    function teclaP() {
+        if (intervalColor != null) {
+            clearInterval(intervalColor);
+            intervalColor = null;
+            document.getElementById("marcador").innerHTML = "PAUSE";
+        }
+    }
+
+    function teclaS() {
+        if (intervalColor == null) {
+
+            document.getElementById("marcador").innerHTML = "Marcador";
+            addCuadrados();
+        }
     }
 </script>
 
