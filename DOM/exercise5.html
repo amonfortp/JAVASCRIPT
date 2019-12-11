@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 5</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        td {
+            width: 100px;
+            height: 100px;
+            border: 2px black solid;
+            margin: 15px;
+            display: inline-block;
+        }
+
+        span {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body class="centrar">
+    <button type="button" id="start">Comenzar</button>
+    <p>El color elegido és: <span id="colores"></span></p>
+    <table>
+        <tr>
+
+        </tr>
+    </table>
+
+</body>
+<script>
+    var intervalColor;
+    var cuadrados = [];
+    var colores = ["FireBrick ", "Gold", "HotPink", "OrangeRed", "Turquoise"];
+    var color = colorRandom();
+    document.getElementById("colores").innerHTML += color;
+    document.getElementById("colores").style.background = color;
+
+    document.getElementById("start").onclick = addCuadrados;
+
+    function addCuadrados() {
+        var fila = document.getElementsByTagName("tr");
+
+        for (var i = 0; i < Math.floor(Math.random * 4 + 1); i++) {
+            let nuevoCuadrado = document.createElement("td");
+            nuevoCuadrado.style.background = colorRandom();
+
+            cuadrados.push(nuevoCuadrado);
+        }
+
+
+    }
+
+    function colorRandom() {
+        return colores[Math.floor(Math.random() * colores.length)];
+    }
+</script>
+
+</html>
