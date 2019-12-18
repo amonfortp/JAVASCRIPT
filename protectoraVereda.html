@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Protectora</title>
+</head>
+<style>
+    form {
+        margin-bottom: 50px;
+    }
+
+    table {
+        margin: auto;
+        text-align: center;
+    }
+
+    th {
+        padding: 5px;
+    }
+
+    td {
+        border: 2px black solid;
+    }
+</style>
+
+<body>
+    <h1>ProtectVereda</h1>
+    <h4>Añadir o mostrar animales</h4>
+    <form action="" id="new">
+        <select name="raza" id="raza">
+            <option value="0" selected disabled>Escoge una raza</option>
+            <option value="1">Perro</option>
+            <option value="2">Gato</option>
+            <option value="3">Conejo</option>
+        </select>
+        <br>
+        <input type="number" placeholder="Edad" min="0" max="40" id="edad">
+        <br>
+        <label for="">
+            <input type="checkbox" name="vacunado" id="vacunado"> Vacunado
+        </label>
+        <br>
+        <label for="">
+            <input type="checkbox" name="esterilizado" id="esterilizado"> Esterilizado
+        </label>
+        <br>
+        <input type="button" value="Añadir" id="add">
+        <input type="button" value="Mostrar" id="mostrar">
+    </form>
+
+    <h4>Buscar, adoptar, vacunar y/o esterilizar animal por código</h4>
+    <form action="">
+        <input type="text" placeholder="Código" id="codigo">
+        <input type="button" value="Buscar" id="buscar">
+        <input type="button" value="Adoptar" id="adoptar">
+        <input type="button" value="Vacunar" id="vacunar">
+        <input type="button" value="Esterilizar" id="esterilizar">
+    </form>
+
+    <table hidden>
+        <thead>
+            <tr>
+                <th>Raza</th>
+                <th>Codigo</th>
+                <th>Edad</th>
+                <th>Vacunado</th>
+                <th>Esterilizado</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+<script>
+    document.getElementById("add").onclick = addAnimal;
+    document.getElementById("mostrar").onclick = mostrarAnimales;
+    document.getElementById("buscar").onclick = buscarAnimal;
+    document.getElementById("adoptar").onclick = adoptarAnimal;
+    document.getElementById("vacunar").onclick = vacunarAnimal;
+    document.getElementById("esterilizar").onclick = esterilizarAnimal;
+
+    /** 
+     * Constructor del objeto animal
+     * @param {string} r - raza del animal
+     * @param {string} c - código del animal
+     * @param {boolean} v - true en caso de estar vacunado
+     * @param {boolean} e - true en caso de estar Esterilizado
+     */
+    function Animal(r, c, e, v, es) {
+        this.raza = r;
+        this.codigo = c;
+        this.edad = e;
+        this.vacunado = v;
+        this.esterilizado = es;
+
+        this.getRaza = function () {
+            return this.raza;
+        }
+
+        this.getCodigo = function () {
+            return this.codigo;
+        }
+
+        this.getVacunado = function () {
+            return this.vacunado;
+        }
+
+        this.getEsterilizado = function () {
+            return this.esterilizado;
+        }
+
+        this.setVacunado = function (v) {
+            this.vacunado = v;
+        }
+
+        this.setEsterilizado = function (e) {
+            this.esterilizado = e;
+        }
+
+        /** 
+         * Funcion para devolver la los datos del animal en
+         * formato para introducirlo en una tabla
+         * @param {node} fila - Información del animal devuelta en un nodo fila
+         */
+        this.mostrar = function () {
+            var fila = document.createElement("tr");
+
+            celda = document.createElement("td");
+            fila.appendChild(celda);
+            celda.innerHTML = this.raza;
+            celda = document.createElement("td");
+            fila.appendChild(celda);
+            celda.innerHTML = this.codigo;
+            celda = document.createElement("td");
+            fila.appendChild(celda);
+            celda.innerHTML = this.edad;
+            celda = document.createElement("td");
+            fila.appendChild(celda);
+            celda.innerHTML = (this.vacunado == true) ? "Si" : "No";
+            celda = document.createElement("td");
+            fila.appendChild(celda);
+            celda.innerHTML = (this.esterilizado == true) ? "Si" : "No";
+
+            return fila;
+        }
+    }
+
+    //Animales de prueba y ejemplo, junto a array que almacena todos los animales del programa
+    var a1, a2, a3;
+    a1 = new Animal("Perro", 1, 10, true, false);
+    a2 = new Animal("Gato", 2, 5, true, true);
+    a3 = new Animal("Conejo", 3, 3, false, false);
+    var animales = [a1, a2, a3];
+
+    //Funcion para mostrar todos los animales
+    function mostrarAnimales() {
+        var tbody = document.getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+        for (var i = 0; i < animales.length; i++) {
+            animalID(i);
+        }
+    }
+
+    function addAnimal() {
+        var r = document.getElementById("raza").selectedIndex;
+        var e = document.getElementById("edad").value;
+        var v = document.getElementById("vacunado").checked;
+        var es = document.getElementById("esterilizado").checked;
+        var animal;
+        var raza;
+
+        if (r === 0) {
+            alert("No has seleccionado una raza");
+        } else if (!document.getElementById("edad").checkValidity()) {
+            alert("No has introducido la edad correctamente");
+        } else {
+            if (r == 1) {
+                raza = "Perro";
+            } else if (r == 2) {
+                raza = "Gato";
+            } else if (r == 3) {
+                raza = "Conejo";
+            }
+
+            animal = new Animal(raza, animales[animales.length - 1].getCodigo() + 1, Number(e), v, es);
+            animales.push(animal);
+
+            var tbody = document.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = "";
+            animalID(animales.length - 1);
+        }
+
+
+
+    }
+
+    function animalID(id) {
+        var tbody = document.getElementsByTagName("tbody")[0];
+        tbody.appendChild(animales[id].mostrar());
+        var tabla = document.getElementsByTagName("table");
+        tabla[0].hidden = false;
+    }
+
+    function buscarID(id) {
+
+        for (var i = 0; i < animales.length; i++) {
+            if (animales[i].getCodigo() === Number(id)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function buscarAnimal() {
+        var codigo = document.getElementById("codigo").value;
+        var id = buscarID(codigo);
+        if (id != -1) {
+            var tbody = document.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = "";
+            animalID(id);
+        } else {
+            alert("El codigo no existe");
+        }
+    }
+
+    function adoptarAnimal() {
+        var codigo = document.getElementById("codigo").value;
+        var id = buscarID(codigo);
+        if (id != -1) {
+            animales.splice(id, 1);
+            mostrarAnimales();
+        } else {
+            alert("No se encuentra animal con el codigo correspondiente");
+        }
+    }
+
+    function vacunarAnimal() {
+        var codigo = document.getElementById("codigo").value;
+        var id = buscarID(codigo);
+        if (id != -1) {
+            console.log(animales[id]);
+            if (!animales[id].getVacunado()) {
+                animales[id].setVacunado(true);
+                var tbody = document.getElementsByTagName("tbody")[0];
+                tbody.innerHTML = "";
+                animalID(id);
+            } else {
+                alert("El " + animales[id].getRaza() + " ya esta vacunado");
+            }
+        } else {
+            alert("El codigo no existe");
+        }
+    }
+
+    function esterilizarAnimal() {
+        var codigo = document.getElementById("codigo").value;
+        var id = buscarID(codigo);
+        if (id != -1) {
+            if (!animales[id].getEsterilizado()) {
+                animales[id].setEsterilizado(true);
+                var tbody = document.getElementsByTagName("tbody")[0];
+                tbody.innerHTML = "";
+                animalID(id);
+            } else {
+                alert("El " + animales[id].getRaza() + " ya esta vacunado");
+            }
+        } else {
+            alert("El codigo no existe");
+        }
+    }
+
+</script>
+
+</html>
