@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ahorcado Navideño</title>
+</head>
+<style>
+    p#word {
+        font-size: 60px;
+        letter-spacing: 3pt;
+    }
+
+    p#letras {
+        color: red;
+        font-size: 30px;
+    }
+
+    p#vidas {
+        font-size: 20px;
+    }
+
+    p#resultado {
+        font-size: 60px;
+    }
+
+    img#imagen {
+        width: 180px;
+        height: 180px;
+    }
+</style>
+
+<body>
+    <h1>Ahorcado Navideño</h1>
+    <form action="" id="formulario">
+        <textarea placeholder="Escribe una palabra o frase" id="palabra"></textarea>
+        <br>
+        <input type="button" value="Aceptar" id="aceptar">
+        <input type="button" value="Jugar" id="start" disabled>
+    </form>
+    <img id="imagen" src="" alt="">
+    <p id="word"></p>
+    <p id="letras"></p>
+    <p id="vidas"></p>
+    <p id="resultado"></p>
+</body>
+<script>
+    // Variables que almacenara la palabra o la frase introducida y las letras incorrectas
+    var palabra = [];
+    var palabraOculta = [];
+    var incorrectas = [];
+    var aciertos;
+
+    //Intervalo para el tiempo que debe pasar para contar fallo
+    var tiempoInterval = null;
+    var tiempo = 10;
+    var rojoInterval = null;
+    var tiempoRojo = 0.5;
+
+    // Vidas en el juego
+    var vidas = 5;
+
+    // Al pulsar el boton "aceptar" se activa una función para comprobar que la palabra 
+    // o frase es valida y en caso de serlo activar el boton "jugar"
+    document.getElementById("aceptar").onclick = function () {
+        var word = document.getElementById("palabra").value.toUpperCase();
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("imagen").src = "";
+        document.getElementById("letras").innerHTML = "";
+        document.getElementById("resultado").innerHTML = "";
+
+        if (comprobarIntroducido(word) == true) {
+            palabra = limpiarArray(word.split(" "));
+            aciertos = palabra.join("").split("").length;
+            document.getElementById("palabra").style.border = "2px green solid";
+            document.getElementById("palabra").value = "";
+            document.getElementById("start").disabled = false;
+        } else {
+            document.getElementById("palabra").style.border = "2px red solid";
+            alert("No es valido, introduce una frase o una palabra");
+        }
+    }
+
+    //Evento para iniciar el juego
+    document.getElementById("start").onclick = function () {
+        vidas = 5;
+        document.getElementById("imagen").src = vidas + ".png";
+        document.getElementById("vidas").innerHTML = "Vidas: " + vidas;
+        crearOculta();
+        document.getElementById("palabra").disabled = true;
+        document.getElementById("aceptar").disabled = true;
+        document.getElementById("start").disabled = true;
+        document.onkeydown = juego;
+        tiempoInterval = setInterval(function () {
+            vidas--;
+            document.getElementById("vidas").innerHTML = "Vidas: " + vidas;
+            if (vidas == 0) {
+                fin();
+            }
+        }, tiempo * 1000);
+
+    }
+
+    //Functión para comprobar que la palabra o frase es valida
+    function comprobarIntroducido(word) {
+        if (word.replace(/ /gi, "") == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //Función para limpiar un array en caso de tener espacios
+    function limpiarArray(array) {
+        var nuevoArray = array;
+
+        for (var i = 0; i < array.length; i++) {
+            if (nuevoArray[i].replace(/ /gi, "") == "") {
+                nuevoArray.splice(i, 1);
+                i--;
+            }
+        }
+
+        return nuevoArray;
+    }
+
+    function crearOculta() {
+        palabraOculta = palabra.join(" ").split("");
+        for (var i = 0; i < palabraOculta.length; i++) {
+            if (palabraOculta[i] != " ") {
+                palabraOculta[i] = "_";
+            }
+
+        }
+
+        document.getElementById("word").innerHTML = palabraOculta.join("");
+    }
+
+    function modificarOculta(char) {
+        var auxArray = palabra.join(" ").split("");
+        var valido = false;
+        for (var i = 0; i < incorrectas.length; i++) {
+            if (char == incorrectas[i]) {
+                return valido;
+            }
+        }
+
+        for (var i = 0; i < auxArray.length; i++) {
+            if (char == auxArray[i]) {
+                if (palabraOculta[i] == "_") {
+                    palabraOculta[i] = auxArray[i];
+                    document.getElementById("word").innerHTML = palabraOculta.join("");
+                    aciertos--;
+                }
+                valido = true;
+            }
+        }
+
+        if (!valido) {
+            incorrectas.push(char);
+            document.getElementById("letras").innerHTML = incorrectas.join(" - ");
+        }
+
+        return valido;
+    }
+
+    function juego(event) {
+        clearInterval(tiempoInterval);
+        tiempoInterval = null;
+        var char = event.key.toUpperCase()
+        var valido = modificarOculta(char);
+
+        if (!valido) {
+            vidas--;
+            document.getElementById("vidas").innerHTML = "Vidas: " + vidas;
+            if (vidas == 1 && rojoInterval == null) {
+                rojoInterval = setInterval(function () {
+                    if (document.body.style.background != "red") {
+                        document.body.style.background = "red";
+                        document.getElementById("letras").style.color = "white";
+                    } else {
+                        document.body.style.background = "white";
+                        document.getElementById("letras").style.color = "red";
+                    }
+                }, tiempoRojo * 1000);
+            }
+        }
+
+        document.getElementById("imagen").src = vidas + ".png";
+
+
+        console.log(vidas + " " + aciertos);
+        if (vidas == 0 || aciertos == 0) {
+            fin();
+        }
+
+        tiempoInterval = setInterval(function () {
+            vidas--;
+            document.getElementById("vidas").innerHTML = "Vidas: " + vidas;
+            if (vidas == 0) {
+                fin();
+            }
+        }, tiempo * 1000);
+    }
+
+    function fin() {
+        clearInterval(tiempoInterval);
+        tiempoInterval = null;
+        clearInterval(rojoInterval);
+        rojoInterval = null;
+        document.body.style.background = "white";
+        document.getElementById("letras").style.color = "red";
+        if (vidas == 0) {
+            var auxArray = palabra.join(" ").split("");
+            for (var i = 0; i < palabraOculta.length; i++) {
+                if (palabraOculta[i] == "_") {
+                    palabraOculta[i] = '<span style="color: red;">' + auxArray[i] + '</span>';
+                }
+            }
+            document.getElementById("word").innerHTML = palabraOculta.join("");
+            document.getElementById("resultado").innerHTML = "HAS PERDIDO";
+        } else {
+            document.getElementById("resultado").innerHTML = "HAS GANADO";
+        }
+
+        palabra = [];
+        palabraOculta = [];
+        incorrectas = [];
+        document.onkeydown = null;
+        document.getElementById("palabra").disabled = false;
+        document.getElementById("aceptar").disabled = false;
+    }
+
+</script>
+
+</html>
