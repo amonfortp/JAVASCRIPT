@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+}
+
+#logo {
+  height: 300px;
+  background-image: url("../imagenes/titulo2.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+section {
+  color: white;
+  width: 80%;
+  margin: auto;
+  padding: 15px;
+  padding-top: 5px;
+}
+
+#titulo {
+  text-align: center;
+}
+
+#seguir,
+#plantarse {
+  display: none;
+}
+
+.imagenes > img {
+  width: 10%;
+  height: 10%;
+  margin: 5px;
+}
+
+#jugador,
+#maquina {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+hr {
+  clear: left;
+}
+
+input {
+  margin-bottom: 5px;
+}
