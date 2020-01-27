@@ -1,0 +1,46 @@
+body {
+  text-align: center;
+  color: white;
+  background-color: black;
+}
+
+#juego {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+#start {
+  font-size: 25px;
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+  background-color: firebrick;
+  border: 1px solid black;
+}
+
+#start:hover {
+  background-color: rgba(178, 34, 34, 0.5);
+  color: white;
+}
+
+#celdas {
+  display: none;
+  background-color: rgba(255, 255, 255, 0.25);
+  padding: 20px;
+}
+
+.celda {
+  font-size: 50px;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  display: inline-flex;
+}
+
+.result > p {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+}
