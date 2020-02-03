@@ -10,26 +10,21 @@ function cargarDatos() {
     }
   };
 
-  xhttp.open("GET", "/exerciseJSON1/js/json/ejercicio3.json", true);
+  xhttp.open("GET", "/exerciseJSON1/js/json/ejercicio5.json", true);
   xhttp.send();
 }
 
 function mostrarDatos(response) {
-  var menu = JSON.parse(response);
+  var datos = JSON.parse(response);
 
-  for (i in menu.menu) {
-    let plato = menu.menu[i];
+  for (i in datos.arboles) {
+    let arbol = datos.arboles[i];
+    console.log(arbol);
     let p = document.createElement("p");
-    for (a in plato) {
-      console.log(a);
+    for (a in arbol) {
+      console.log(a + " " + arbol[a]);
       p.innerHTML +=
-        "<span>" +
-        a.toUpperCase() +
-        "</span>" +
-        " - " +
-        plato[a] +
-        (a === "precio" ? "€ " : "") +
-        "<br>";
+        "<span>" + a.toUpperCase() + "</span>" + " - " + arbol[a] + "<br>";
     }
     document.getElementById("result").appendChild(p);
   }
