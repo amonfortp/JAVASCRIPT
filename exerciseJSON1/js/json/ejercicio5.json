@@ -1,0 +1,41 @@
+{
+  "arboles": [
+    {
+      "nombreCientifico": "Acer monspessulanum",
+      "nombre": "Arce de Montpellier, Arce menor",
+      "vegetacion": "Caducifolio",
+      "altura": "de 6 a 10 metros",
+      "forma": "Copa esférica. Tronco principal recto con bifurcaciones. Ramaje colgante",
+      "colorPrimavera": "Haz verde brillante, envés verde blanquecino",
+      "resistenciaHeladas": "Heladas fuertes (hasta -15ºC)"
+    },
+    {
+      "nombreCientifico": "Olea europea",
+      "nombre": "Olvido",
+      "vegetacion": "Perenne",
+      "altura": "De 8 a 15 metros",
+      "forma": "Copa irregular. Tronco principal irregular con bifurcaciones. Ramaje tortuoso",
+      "colorPrimavera": "Haz verde oscuro, envés verde plateado",
+      "resistenciaHeladas": "Heladas fuertes (hasta -10ºC)"
+    },
+    {
+      "nombreCientifico": "Platanus orientalis",
+      "nombre": "Platano",
+      "vegetacio": "Caducifolio",
+      "altura": "De 20 a 25 metros",
+      "forma": "Copa ovoidal. Tronco principal recto. Ramaje expandido",
+      "colorPrimavera": "Haz verde medio, envés verde claro",
+      "colorOtoño": "Ocre",
+      "resistenciaHeladas": "Heladas fuertes (hasta -20ºC)"
+    },
+    {
+      "nombreCientifico": "Quercus ilex",
+      "nombre": "Encina",
+      "vegetacion": "Perenne",
+      "altura": "Entorno a 25 metros",
+      "forma": "Copa esférica o elíptica irregular. Tronco principal recto. Remaje tortuoso",
+      "colorPrimavera": "Plateado en hojas jóvenes. En hojas antiguas, haz verde oscuro, envés plateado",
+      "resistenciaHeladas": "Heladas fuertes (hasta -15ºC)"
+    }
+  ]
+}
