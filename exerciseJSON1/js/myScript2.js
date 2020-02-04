@@ -10,7 +10,7 @@ function cargarDatos() {
     }
   };
 
-  xhttp.open("GET", "/exerciseJSON1/js/json/ejercicio2.json", true);
+  xhttp.open("GET", "js/json/ejercicio2.json", true);
   xhttp.send();
 }
 
@@ -22,16 +22,16 @@ function mostrarDatos(response) {
     console.log(datos);
     let p = document.createElement("p");
     for (a in datos) {
-      console.log(datos[a][0]["parrafo1"]);
+      console.log(datos[a][0].parrafo1);
       if (a === "remite" || a === "destinatario") {
         p.innerHTML +=
           "<span>" +
           a.toUpperCase() +
           "</span>" +
           " - " +
-          datos[a][0]["nombre"] +
+          datos[a][0].nombre +
           ", " +
-          datos[a][0]["email"] +
+          datos[a][0].email +
           "<br>";
       } else if (a === "text") {
         p.innerHTML += "<span>" + a.toUpperCase() + "</span> - ";

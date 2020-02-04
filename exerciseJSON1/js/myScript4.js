@@ -10,7 +10,7 @@ function cargarDatos() {
     }
   };
 
-  xhttp.open("GET", "/exerciseJSON1/js/json/ejercicio5.json", true);
+  xhttp.open("GET", "js/json/ejercicio5.json", true);
   xhttp.send();
 }
 
@@ -19,7 +19,6 @@ function mostrarDatos(response) {
 
   for (i in datos.arboles) {
     let arbol = datos.arboles[i];
-    console.log(arbol);
     let p = document.createElement("p");
     for (a in arbol) {
       console.log(a + " " + arbol[a]);

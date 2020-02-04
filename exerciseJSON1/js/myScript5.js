@@ -10,7 +10,7 @@ function cargarDatos() {
     }
   };
 
-  xhttp.open("GET", "/exerciseJSON1/js/json/ejercicio6.json", true);
+  xhttp.open("GET", "js/json/ejercicio6.json", true);
   xhttp.send();
 }
 
