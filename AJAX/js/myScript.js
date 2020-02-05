@@ -15,7 +15,6 @@ function cargarDatos() {
 
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
       let respuesta = document.getElementById("result");
       respuesta.innerHTML = number;
       if (Number.parseInt(this.responseText) == 0) {
@@ -35,15 +34,23 @@ function cargarDatos() {
 
 function palindromo() {
   var arrayNum = String(number).split("");
-  var aux;
-
-  for (var i = 0; i < arrayNum.length - 1; i++) {
-    aux = i + 1;
-    if (arrayNum[i] != arrayNum[aux]) {
-      respuesta.innerHTML += " y no es un palindromo";
-      return;
-    }
+  if (arrayNum.join("") != arrayNum.reverse().join("")) {
+    respuesta.innerHTML += " y no es un palindromo";
+  } else {
+    respuesta.innerHTML += " y es un palindromo";
   }
 
-  respuesta.innerHTML += " y es un palindromo";
+  // var aux = arrayNum.length - 1;
+
+  // for (var i = 0; i < arrayNum.length; i++) {
+  //   console.log(arrayNum[i] + " " + arrayNum[aux]);
+  //  console.log(aux);
+  //  if (arrayNum[i] != arrayNum[aux]) {
+  //    respuesta.innerHTML += " y no es un palindromo";
+  //    return;
+  //  }
+  //  aux--;
+  //}
+
+  //respuesta.innerHTML += " y es un palindromo";
 }
